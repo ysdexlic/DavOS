@@ -23,6 +23,11 @@ Install `qemu`
     brew install qemu
   ```
 
+## Running the OS
+
+You can run `make build` to compile the assembly code and then run `make run` to
+emulate it.
+
 ## TODO
 
 Use another assembler to compile to different architectures
