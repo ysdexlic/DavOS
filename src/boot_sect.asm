@@ -1,49 +1,33 @@
 [org 0x7c00]
 
-mov bx, HELLO_MESSAGE
-call print_string
+  mov si, HELLO_MESSAGE
+  cld
+  call ch_loop
 
-call new_line
+  mov si, GOODBYE_MESSAGE
+  cld
+  call ch_loop
 
-mov bx, GOODBYE_MESSAGE
-call print_string
+  jmp $
 
-jmp $
-
-print_char:
-  pusha
-  mov ah, 0x0e
+ch_loop:
+  lodsb
+  or al, al
+  jz done
+  mov ah, 0x0E
+  mov bh, 0
   int 0x10
-  popa
-  ret
+  jmp ch_loop
 
-print_string:
-  mov al, [bx]
-  cmp al, 0
-  je rrr
-  call print_char
-  add bx, 1
-  jmp print_string
-
-rrr:
-  ret
-
-new_line:
-  pusha
-  mov ah, 0x0e
-  mov al, 10
-  int 0x10
-  mov al, 13
-  int 0x10
-  popa
+done:
   ret
 
 HELLO_MESSAGE:
-  db "Booting DavOS", 0
+  db "Booting DavOS", 13, 10, 0
 
 GOODBYE_MESSAGE:
-  db "Shutting Down DavOS", 0
+  db "Shutting Down DavOS", 13, 10, 0
 
-times 510-($-$$) db 0
+  times 510-($-$$) db 0
 
-dw 0xaa55
+  dw 0xaa55
